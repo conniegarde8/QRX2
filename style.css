@@ -28,15 +28,14 @@
     background-color: rgba(220, 0, 0, 0.9);
 }
 
-/* 新增：主题切换按钮样式 */
+/* 修改后的主题切换按钮样式 */
 #quick-reply-theme-toggle-button {
     position: fixed;
-    left: 50%; /* Center point */
-    /* transform: translateX(0); REMOVED - not needed with margin */
-    margin-left: 5px; /* Add half the desired gap (10px total gap / 2 = 5px) to the right */
+    left: calc(50% + 55px); /* 调整为在关闭按钮右侧，保持55px间距 */
+    transform: translateX(-50%); /* 保持与关闭按钮相同的对齐方式 */
     top: 150px;
     z-index: 1002;
-    background-color: rgba(0, 80, 180, 0.8); /* 蓝色背景 */
+    background-color: rgba(0, 80, 180, 0.8);
     color: white;
     border: 1px solid #444;
     border-radius: 5px;
@@ -44,9 +43,8 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s;
-    /* display: none; */ /* <<< REMOVED THIS LINE - Fix for visibility */
+    display: none;
     white-space: nowrap;
-    /* Initially hidden by JS in initQuickReplyControls, so no display:none needed here */
 }
 #quick-reply-theme-toggle-button:hover {
     background-color: rgba(0, 100, 220, 0.9);
