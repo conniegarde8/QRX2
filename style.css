@@ -31,8 +31,7 @@
 /* 修改后的主题切换按钮样式 */
 #quick-reply-theme-toggle-button {
     position: fixed;
-    left: calc(50% + 55px); /* 调整为在关闭按钮右侧，保持55px间距 */
-    transform: translateX(-50%); /* 保持与关闭按钮相同的对齐方式 */
+    right: 20px; /* 改为固定在右侧 */
     top: 150px;
     z-index: 1002;
     background-color: rgba(0, 80, 180, 0.8);
