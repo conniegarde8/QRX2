@@ -4,14 +4,16 @@
     overflow: hidden !important;
 }
 
-/* 关闭按钮样式 (原快速回复按钮位置) */
+/* --- 顶部控制按钮 --- */
+/* 关闭按钮样式 */
 #quick-reply-close-button {
     position: fixed;
-    left: 50%;
-    transform: translateX(-50%);
+    left: 50%; /* Center point */
+    transform: translateX(-100%); /* Move left by its own width */
+    margin-left: -5px; /* Add half the desired gap (10px total gap / 2 = 5px) to the left */
     top: 150px;
-    z-index: 1002; /* 比菜单高一级，确保在菜单上方 */
-    background-color: rgba(180, 0, 0, 0.8); /* 红色背景表示关闭 */
+    z-index: 1002;
+    background-color: rgba(180, 0, 0, 0.8);
     color: white;
     border: 1px solid #444;
     border-radius: 5px;
@@ -19,50 +21,71 @@
     cursor: pointer;
     font-size: 14px;
     transition: background-color 0.3s;
-    display: none; /* 初始隐藏 */
+    display: none; /* JS controls visibility, initially hidden */
+    white-space: nowrap;
 }
-
 #quick-reply-close-button:hover {
     background-color: rgba(220, 0, 0, 0.9);
 }
 
-/* 新增：火箭按钮样式 */
+/* 新增：主题切换按钮样式 */
+#quick-reply-theme-toggle-button {
+    position: fixed;
+    left: 50%; /* Center point */
+    /* transform: translateX(0); REMOVED - not needed with margin */
+    margin-left: 5px; /* Add half the desired gap (10px total gap / 2 = 5px) to the right */
+    top: 150px;
+    z-index: 1002;
+    background-color: rgba(0, 80, 180, 0.8); /* 蓝色背景 */
+    color: white;
+    border: 1px solid #444;
+    border-radius: 5px;
+    padding: 5px 10px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background-color 0.3s;
+    /* display: none; */ /* <<< REMOVED THIS LINE - Fix for visibility */
+    white-space: nowrap;
+    /* Initially hidden by JS in initQuickReplyControls, so no display:none needed here */
+}
+#quick-reply-theme-toggle-button:hover {
+    background-color: rgba(0, 100, 220, 0.9);
+}
+
+
+/* --- 火箭按钮 --- */
 #quick-reply-rocket-button {
-    /* 继承 .interactable .secondary-button 的部分样式 */
-    /* 可以添加特定样式覆盖或补充 */
-    color: #a0a0a0; /* 默认颜色，可以自定义 */
-    font-size: 1.2em; /* 稍微调大一点图标 */
-    line-height: var(--buttons-bar-height); /* 垂直居中 */
+    color: #a0a0a0;
+    font-size: 1.2em;
+    line-height: var(--buttons-bar-height);
     height: var(--buttons-bar-height);
     display: flex;
     align-items: center;
-    margin-right: 8px; /* 和发送按钮的间距 */
+    margin-right: 8px;
     cursor: pointer;
     transition: color 0.2s;
 }
-
 #quick-reply-rocket-button:hover {
-    color: #ffffff; /* 鼠标悬停时变白 */
+    color: #ffffff;
 }
 
-/* 快速回复菜单容器 */
+/* --- 快速回复菜单 --- */
 #quick-reply-menu {
-    display: none;
+    display: none; /* JS controls visibility, initially hidden */
     position: fixed;
     left: 50%;
-    top: 190px; /* 位置在关闭按钮下方 */
+    top: 190px; /* 位置在控制按钮下方 */
     transform: translateX(-50%);
-    z-index: 1001; /* 比关闭按钮低一级 */
-    background-color: rgba(0, 0, 0, 0.85);
+    z-index: 1001;
+    background-color: rgba(0, 0, 0, 0.85); /* 默认深色背景 */
     border: 1px solid #555;
     border-radius: 8px;
-    padding: 15px 10px 10px 10px; /* 顶部增加一点padding，避免太靠近关闭按钮 */
+    padding: 15px 10px 10px 10px;
     width: 600px;
     max-width: 80vw;
     box-shadow: 0 4px 12px rgba(0, 0, 0, 0.3);
+    transition: background-color 0.3s, border-color 0.3s; /* 平滑主题切换 */
 }
-
-/* --- 以下样式保持不变 --- */
 
 /* 菜单布局 */
 .quick-reply-menu-container {
@@ -74,64 +97,107 @@
 /* 左右容器共有样式 */
 .quick-reply-list {
     width: 48%;
-    border: 1px solid #444;
+    border: 1px solid #444; /* 默认深色边框 */
     border-radius: 5px;
     padding: 8px;
     max-height: 300px;
     overflow-y: auto;
+    transition: border-color 0.3s; /* 平滑主题切换 */
 }
 
-/* 标题样式 */
+/* 标题样式 (默认深色) */
 .quick-reply-list-title {
-    text-align: center;
-    color: #ccc;
+    text-align: center; /* 强制居中 */
+    color: #ccc;       /* 默认浅灰色文字 */
     font-size: 14px;
     margin-bottom: 8px;
     padding-bottom: 5px;
-    border-bottom: 1px solid #444;
+    border-bottom: 1px solid #444; /* 默认深色下划线 */
+    transition: color 0.3s, border-bottom-color 0.3s; /* 平滑主题切换 */
 }
 
-/* 快捷回复项样式 */
+/* 快捷回复项样式 (默认深色) */
 .quick-reply-item {
     padding: 5px 8px;
     margin: 4px 0;
-    background-color: rgba(60, 60, 60, 0.7);
+    background-color: rgba(60, 60, 60, 0.7); /* 默认深色背景 */
+    color: white; /* 强制白色文字 */
+    text-align: center; /* 强制居中 */
     border-radius: 4px;
     cursor: pointer;
-    transition: background-color 0.2s;
+    transition: background-color 0.2s, color 0.2s;
     white-space: nowrap;
     overflow: hidden;
     text-overflow: ellipsis;
 }
-
 .quick-reply-item:hover {
-    background-color: rgba(100, 100, 100, 0.9);
+    background-color: rgba(100, 100, 100, 0.9); /* 默认深色悬停 */
 }
 
-/* 滚动条样式 */
+/* 空列表提示 (默认深色) */
+.quick-reply-empty {
+    color: #666; /* 默认较暗文字 */
+    text-align: center; /* 强制居中 */
+    padding: 10px;
+    font-style: italic;
+    font-size: 12px;
+    transition: color 0.3s; /* 平滑主题切换 */
+}
+
+
+/* --- 浅色主题样式 (.light-theme) --- */
+#quick-reply-menu.light-theme {
+    background-color: #f8f8f8; /* 浅色背景 */
+    border-color: #bbb;       /* 浅色边框 */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+}
+
+#quick-reply-menu.light-theme .quick-reply-list {
+    border-color: #ddd; /* 浅色列表边框 */
+}
+
+#quick-reply-menu.light-theme .quick-reply-list-title {
+    color: #333; /* 浅色主题标题文字 (黑色) */
+    border-bottom-color: #ddd; /* 浅色主题下划线 */
+}
+
+#quick-reply-menu.light-theme .quick-reply-item {
+    background-color: #e9e9e9; /* 浅色项目背景 */
+    color: #000; /* 浅色项目文字 (黑色) */
+}
+
+#quick-reply-menu.light-theme .quick-reply-item:hover {
+    background-color: #dcdcdc; /* 浅色项目悬停背景 */
+}
+
+#quick-reply-menu.light-theme .quick-reply-empty {
+    color: #555; /* 浅色空列表提示文字 (深灰) */
+}
+
+/* --- 滚动条样式 (保持深色风格，但在浅色主题下稍微调整) --- */
+/* 默认深色滚动条 */
 .quick-reply-list::-webkit-scrollbar {
     width: 6px;
 }
-
 .quick-reply-list::-webkit-scrollbar-track {
     background: rgba(0, 0, 0, 0.1);
     border-radius: 3px;
 }
-
 .quick-reply-list::-webkit-scrollbar-thumb {
     background: rgba(100, 100, 100, 0.5);
     border-radius: 3px;
 }
-
 .quick-reply-list::-webkit-scrollbar-thumb:hover {
     background: rgba(120, 120, 120, 0.7);
 }
 
-/* 空列表提示 */
-.quick-reply-empty {
-    color: #666;
-    text-align: center;
-    padding: 10px;
-    font-style: italic;
-    font-size: 12px;
+/* 浅色主题滚动条 */
+#quick-reply-menu.light-theme .quick-reply-list::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05); /* 更浅的轨道 */
+}
+#quick-reply-menu.light-theme .quick-reply-list::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2); /* 更深的滑块，与浅色背景对比 */
+}
+#quick-reply-menu.light-theme .quick-reply-list::-webkit-scrollbar-thumb:hover {
+    background: rgba(0, 0, 0, 0.3);
 }
