@@ -62,28 +62,31 @@ function initQuickReplyControls() {
  * 显示快速回复菜单
  */
 function showQuickReplyMenu() {
-    if (menuVisible) return; // 如果已经可见，则不执行任何操作
+    if (menuVisible) return;
 
     const menu = document.getElementById('quick-reply-menu');
     const closeButton = document.getElementById('quick-reply-close-button');
+    const themeToggleButton = document.getElementById('quick-reply-theme-toggle-button');
 
-    // 优化：仅在需要时更新数据
+    // 添加调试日志
+    console.log('Showing menu. Theme toggle button:', themeToggleButton);
+    
     if (dataNeedsUpdate) {
         console.log('Fetching quick replies...');
-        updateQuickReplies(); // 获取并存储数据
-        dataNeedsUpdate = false; // 标记数据已加载
-    } else {
-        console.log('Using cached quick replies...');
+        updateQuickReplies();
+        dataNeedsUpdate = false;
     }
 
-    // 始终根据当前数据渲染菜单
     renderQuickReplies();
 
     menu.style.display = 'block';
-    closeButton.style.display = 'block'; // 显示关闭按钮
+    closeButton.style.display = 'block';
+    themeToggleButton.style.display = 'block'; // 确保这行执行
     menuVisible = true;
+    
+    // 添加调试检查
+    console.log('Button display style:', themeToggleButton.style.display);
 }
-
 
 /**
  * 隐藏快速回复菜单
